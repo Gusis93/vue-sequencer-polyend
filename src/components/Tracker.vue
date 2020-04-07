@@ -15,7 +15,7 @@ export default Vue.extend({
   name: 'Tracker',
   components: {
     Controls,
-    Patterns,
+    Patterns
   },
 });
 </script>

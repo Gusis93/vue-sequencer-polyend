@@ -2,8 +2,8 @@
   <div class="step__base">
     <select v-model="key" id="keySelect">
       <option value="C5">C5</option>
-      <option value="A#">A#</option>
-      <option value="B">B</option>
+      <option value="A3">A#</option>
+      <option value="B1">B</option>
     </select>
     <select v-model="instrument" id="instrumentSelect">
       <option value="1">1</option>
@@ -12,6 +12,8 @@
     </select>
 
     <button @click="addStep">Create step</button>
+    
+    {{step}}
   </div>
 </template>
 
