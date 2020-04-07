@@ -1,0 +1,25 @@
+<template>
+  <div class="tracker__base">
+    <Patterns />
+    <Controls />
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue';
+
+import Controls from './Controls/Controls.vue';
+import Patterns from './Patterns.vue';
+
+export default Vue.extend({
+  name: 'Tracker',
+  components: {
+    Controls,
+    Patterns,
+  },
+});
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+</style>
