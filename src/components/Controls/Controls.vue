@@ -1,6 +1,6 @@
 <template>
   <div class="controls__base">
-    <button @click="toggleSequence">Play</button>
+    <button @click="togglePlay">Play</button>
   </div>
 </template>
 
@@ -9,6 +9,11 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'Controls',
+  methods: {
+    togglePlay() {
+      this.$store.commit('togglePlay');
+    }
+  }
 });
 </script>
 

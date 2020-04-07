@@ -5,7 +5,7 @@ const state: State = {
 }
 
 const mutations = {
-  toggleSequence(state: State) {
+  togglePlay(state: State) {
     state.isPlaying = !state.isPlaying;
   }
 }

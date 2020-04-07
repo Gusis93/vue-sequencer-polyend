@@ -1,49 +1,37 @@
 <template>
   <div class="track__base">
-    <select v-model="key" id="keySelect">
-      <option value="C5">C5</option>
-      <option value="A#">A#</option>
-      <option value="B">B</option>
-    </select>
-    <select v-model="instrument" id="instrumentSelect">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-    </select>
-
-    <button @click="addStep">Create step</button>
+    <Step v-for="n in nOfSteps" v-bind:key="n" :step="n - 1" :track="track.id" />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
+
+import Step from '../Steps/Step.vue';
 
 export default Vue.extend({
   name: 'Track',
+  components: {
+    Step
+  },
   data() {
     return {
-      key: 'C5',
-      instrument: 1,
+      nOfSteps: 16
     };
   },
+  watch: {
+    isPlaying(playing) {
+      if (playing) {
+        console.log('Toggle Sequence');
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['isPlaying'])
+  },
   props: {
-    id: String,
-    step: Number,
-  },
-  methods: {
-    addStep() {
-      this.$store.commit('addStep', {
-        step: this.step,
-        tracksInfo: {
-          id: this.id,
-          key: this.key,
-          instrument: Number(this.instrument),
-        },
-      });
-    },
-  },
+    track: Object
+  }
 });
 </script>
-
-<style>
-</style>

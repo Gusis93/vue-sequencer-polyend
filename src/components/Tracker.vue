@@ -1,6 +1,6 @@
 <template>
   <div class="tracker__base">
-    <Steps />
+    <Patterns />
     <Controls />
   </div>
 </template>
@@ -8,14 +8,14 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import Steps from './Steps/Steps.vue';
 import Controls from './Controls/Controls.vue';
+import Patterns from './Patterns.vue';
 
 export default Vue.extend({
   name: 'Tracker',
   components: {
-    Steps,
     Controls,
+    Patterns,
   },
 });
 </script>
