@@ -1,6 +1,6 @@
 <template>
-  <div class="steps__base">
-
+  <div class="controls__base">
+    <button @click="toggleSequence">Play</button>
   </div>
 </template>
 
@@ -8,10 +8,9 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  name: 'Steps',
+  name: 'Controls',
 });
 </script>
 
 <style>
-
 </style>

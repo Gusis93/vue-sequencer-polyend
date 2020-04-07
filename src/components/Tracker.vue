@@ -1,20 +1,21 @@
 <template>
   <div class="tracker__base">
     <Steps />
-    <Tracks />
+    <Controls />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Steps from './Steps.vue';
-import Tracks from './Tracks/Tracks.vue';
+
+import Steps from './Steps/Steps.vue';
+import Controls from './Controls/Controls.vue';
 
 export default Vue.extend({
   name: 'Tracker',
   components: {
     Steps,
-    Tracks,
+    Controls,
   },
 });
 </script>

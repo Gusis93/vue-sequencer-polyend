@@ -28,13 +28,14 @@ export default Vue.extend({
   },
   props: {
     id: String,
+    step: Number,
   },
   methods: {
     addStep() {
       this.$store.commit('addStep', {
-        trackId: this.id,
-        stepInfo: {
-          step: 1,
+        step: this.step,
+        tracksInfo: {
+          id: this.id,
           key: this.key,
           instrument: Number(this.instrument),
         },

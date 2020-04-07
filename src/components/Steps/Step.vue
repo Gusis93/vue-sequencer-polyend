@@ -1,23 +1,25 @@
 <template>
-  <div class="tracks__base">
-    <Track id="drums" :step="step"/>
+  <div class="step__base">
+    <Tracks :step="step"/>
+    -------------------------
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Track from './Track.vue';
+import Tracks from '../Tracks/Tracks.vue';
 
 export default Vue.extend({
-  name: 'Tracks',
+  name: 'Step',
   props: {
-    step: Number,
+    step: Number
   },
   components: {
-    Track,
+    Tracks,
   },
 });
 </script>
 
 <style>
+
 </style>
