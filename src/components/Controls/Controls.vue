@@ -6,16 +6,28 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Transport } from 'tone';
+import * as Tone from 'tone';
+import { mapGetters } from 'vuex';
 
 export default Vue.extend({
   name: 'Controls',
+  computed: {
+    ...mapGetters(['isPlaying'])
+  },
   methods: {
-    togglePlay() {
+    async togglePlay() {
+       await Tone.start();
+
       this.$store.commit('togglePlay');
+
+      Tone.Transport.bpm.value = 90;
       
-      Transport.bpm.value = 90;
-      Transport.start();
+      if (this.isPlaying) {
+        Tone.Transport.start();
+        return;
+      } 
+
+      Tone.Transport.stop();
     }
   }
 });

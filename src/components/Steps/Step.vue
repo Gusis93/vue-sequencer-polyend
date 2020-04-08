@@ -1,19 +1,31 @@
 <template>
   <div class="step__base">
-    <select v-model="key" id="keySelect">
-      <option value="C5">C5</option>
-      <option value="A3">A#</option>
-      <option value="B1">B</option>
-    </select>
-    <select v-model="instrument" id="instrumentSelect">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
+    {{stepN}}
+
+    <select @change="handleSelectChange" v-model="key" id="keySelect">
+      <template v-for="semitone in semitones">
+        <template v-for="tone in tones">
+          <option v-bind:key="tone + '' + semitone" :value="tone + semitone">{{tone + semitone}}</option>
+          <option v-bind:key="tone + '#' + semitone" :value="tone + '#' + semitone">{{tone + '#' + semitone}}</option>
+        </template>
+      </template>
     </select>
 
-    <button @click="addStep">Create step</button>
-    
-    {{step}}
+    <select @change="handleSelectChange" v-model="instrument" id="instrumentSelect">
+      <option
+        v-for="(instrument, i) in instruments"
+        v-bind:key="instrument.name"
+        :value="i"
+      >{{instrument.name}}</option>
+    </select>
+
+    <input
+      v-model="isStepSelected"
+      @change="toggleStep"
+      type="checkbox"
+      id="stepSelection"
+      name="stepSelection"
+    />
   </div>
 </template>
 
@@ -24,25 +36,50 @@ export default Vue.extend({
   name: 'Step',
   data() {
     return {
-      key: 'C5',
-      instrument: 1
+      key: 'C1',
+      instrument: 0,
+      tones: ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+      semitones: 3,
+      isStepSelected: false
     };
   },
   methods: {
+    handleSelectChange() {
+      if (this.isStepSelected) {
+        this.addStep();
+      }
+    },
+    toggleStep() {
+      if (this.isStepSelected) {
+        this.addStep();
+        return;
+      }
+
+      this.deleteStep();
+    },
     addStep() {
       this.$store.commit('addStep', {
-        step: this.step,
+        step: this.stepN,
         track: this.track,
         info: {
+          selected: true,
           key: this.key,
           instrument: Number(this.instrument)
         }
       });
+    },
+    deleteStep() {
+      this.$store.commit('deleteStep', {
+        step: this.stepN,
+        track: this.track
+      });
     }
   },
   props: {
-    step: Number,
-    track: Number
+    step: [String, Object],
+    stepN: Number,
+    track: Number,
+    instruments: Array
   }
 });
 </script>

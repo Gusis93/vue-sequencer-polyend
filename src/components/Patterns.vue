@@ -1,6 +1,6 @@
 <template>
   <div class="pattern__base">
-    <Track v-for="track in tracks" v-bind:key="track.id" :track="track" />
+    <Track v-for="track in tracks" v-bind:key="'track-' + track.id" :track="track" />
   </div>
 </template>
 
