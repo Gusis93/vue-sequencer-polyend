@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 const returnArray = () => Array(16).fill({ selected: false });
 
 const state = {
@@ -12,14 +14,6 @@ const state = {
       {
         id: 1,
         steps: returnArray(),
-      },
-      {
-        id: 2,
-        steps: returnArray(),
-      },
-      {
-        id: 3,
-        steps: returnArray(),
       }
     ]
   }],
@@ -27,7 +21,7 @@ const state = {
 
 const mutations = {
   addStep({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
-    patterns[loadedPattern].tracks[info.track].steps[info.step] = info.info;
+    Vue.set(patterns[loadedPattern].tracks[info.track].steps, info.step, info.info);
   },
   deleteStep({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
     patterns[loadedPattern].tracks[info.track].steps[info.step].selected = false;

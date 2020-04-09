@@ -23,7 +23,7 @@ export default Vue.extend({
       Tone.Transport.bpm.value = 90;
       
       if (this.isPlaying) {
-        Tone.Transport.start();
+        Tone.Transport.start('+0.1');
         return;
       } 
 

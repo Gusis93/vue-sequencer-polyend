@@ -13,10 +13,10 @@
     <button>Select all steps</button>
 
     <Step
-      v-for="(step, stepN) in track.steps"
-      v-bind:key="'track-' + track.id + '-step-' +  stepN"
+      v-for="(step, stepNumber) in track.steps"
+      v-bind:key="'track-' + track.id + '-step-' +  stepNumber"
       :step="step"
-      :stepN="stepN"
+      :stepN="stepNumber"
       :track="track.id"
       :instruments="instruments"
     />
