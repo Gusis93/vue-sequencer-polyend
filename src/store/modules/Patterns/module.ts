@@ -14,6 +14,14 @@ const state = {
       {
         id: 1,
         steps: returnArray(),
+      },
+      {
+        id: 2,
+        steps: returnArray(),
+      },
+      {
+        id: 3,
+        steps: returnArray(),
       }
     ]
   }],

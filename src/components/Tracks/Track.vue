@@ -1,17 +1,7 @@
 <template>
   <div class="track__base">
-    <select id="instrumentSelectAll">
-      <option
-        v-for="(instrument, i) in instruments"
-        v-bind:key="instrument.name"
-        :value="i"
-      >{{instrument.name}}</option>
-    </select>
-
-    <label for="instrumentSelectAll">Select all instruments</label>
-
-    <button>Select all steps</button>
-
+    <!-- TODO mute buttons for tracks / instruments -->
+    <!-- TODO select all buttons for steps / instruments -->
     <Step
       v-for="(step, stepNumber) in track.steps"
       v-bind:key="'track-' + track.id + '-step-' +  stepNumber"
@@ -20,8 +10,6 @@
       :track="track.id"
       :instruments="instruments"
     />
-    
-    -----------------------------------------------------------------------------
   </div>
 </template>
 
@@ -43,6 +31,7 @@ export default Vue.extend({
       nOfSteps: 16,
       instruments: [
         {
+          id: 'kick',
           name: 'Kick',
           allowsNotes: true,
           synth: new MembraneSynth({
@@ -50,6 +39,7 @@ export default Vue.extend({
           }).toDestination()
         },
         {
+          id: 'snare',
           name: 'Snare',
           allowsNotes: false,
           synth: new NoiseSynth({
@@ -57,6 +47,7 @@ export default Vue.extend({
           }).toDestination()
         },
         {
+          id: 'bass',
           name: 'Bass',
           allowsNotes: true,
           synth: new MonoSynth({
@@ -83,7 +74,9 @@ export default Vue.extend({
     playSequence(time: any, col: any) {
       if (this.track.steps[col].selected) {
         const { key, instrument } = this.track.steps[col];
-        const { allowsNotes, synth } = this.instruments[instrument];
+        const { allowsNotes, synth } = this.instruments.find(
+          el => el.id === instrument
+        );
 
         if (allowsNotes) {
           synth.triggerAttackRelease(key, '16n', time);
@@ -108,3 +101,13 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.track {
+  &__base {
+    background: #414141 ;
+    padding: 10px;
+    border-left: 4px solid;
+  }
+}
+</style>
