@@ -16,6 +16,7 @@
       :interval="0.1"
       :showValue="false"
     />
+
     <Slider method="tempo" label="Tempo" valueLabel="bpm" :min="60" :max="240" :value="tempo" />
   </div>
 </template>
@@ -70,7 +71,6 @@ export default Vue.extend({
   &__playPause {
     padding-left: 10px;
     border: none;
-    color: white;
     background: none;
     outline: none;
     cursor: pointer;

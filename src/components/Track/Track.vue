@@ -85,7 +85,9 @@ export default Vue.extend({
 
         Draw.schedule(() => {
           this.animate(true, col);
-          setTimeout(() => { this.animate(false, col); }, 500);
+          setTimeout(() => {
+            this.animate(false, col);
+          }, 500);
         }, time);
       }
     },
@@ -124,10 +126,10 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .track {
   &__base {
-    background: #2b2b2b;
+    background: $grey;
     padding: 40px 20px;
     padding: 10px;
     border-left: 4px solid;

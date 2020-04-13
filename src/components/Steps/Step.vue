@@ -2,7 +2,7 @@
   <li :class="{step__base: true, animate: step.animate}">
     <v-select
       v-model="key"
-      class="keySelect"
+      class="step__keySelect"
       :options="semiTonesArray"
       :clearable="false"
       :searchable="false"
@@ -13,15 +13,16 @@
       v-model="instrument"
       label="name"
       :options="instruments"
+      class="step__instrumentSelect"
       :clearable="false"
       :searchable="false"
       :reduce="instrument => instrument.id"
     ></v-select>
 
-    <label class="label">
-      <input v-model="isSelected" class="isacheck" type="checkbox" />
+    <label class="step__selectCheckboxLabel">
+      <input v-model="isSelected" class="step__selectCheckbox" type="checkbox" />
 
-      <span class="marked"></span>
+      <span class="step__selectCheckboxMark"></span>
     </label>
   </li>
 </template>
@@ -100,59 +101,18 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@keyframes testing {
+@import "../../styles/vs-select.scss";
+
+@keyframes transportPlaying {
   0%,
   100% {
     box-shadow: inset 1px 1px 1px 2px;
-    background-color: #92859c;
+    background-color: $pink;
   }
   50% {
     box-shadow: inset -1px -1px 1px 2px;
-    background-color: #458b85;
+    background-color: $blue;
   }
-}
-
-.marked {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  border: 1px solid #92859c;
-}
-
-input:checked ~ .marked {
-  background-color: #92859c;
-  box-shadow: inset 1px 1px 1px 2px;
-
-  .animate & {
-    animation: testing 500ms;
-    animation-timing-function: ease-in-out;
-    animation-direction: alternate;
-  }
-}
-
-.animate .marked {
-  background-color: #92859c;
-}
-
-.isacheck {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.label {
-  display: block;
-  position: relative;
-  padding-left: 25px;
-  height: 25px;
-  cursor: pointer;
-  font-size: 17px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .step {
@@ -161,88 +121,41 @@ input:checked ~ .marked {
     align-items: center;
     height: 35px;
   }
-}
 
-.v-select {
-  position: relative;
-  margin-right: 10px;
-}
-
-.vs__dropdown-toggle {
-  border-bottom: 1px dashed white;
-  cursor: pointer;
-}
-
-.vs__search {
-  display: none;
-}
-
-.vs__dropdown-menu {
-  padding: 4px;
-  display: block;
-  box-sizing: border-box;
-  position: absolute;
-  top: calc(100% - 1px);
-  left: 0;
-  z-index: 1000;
-  margin: 0;
-  width: 100%;
-  max-height: 350px;
-  overflow-y: auto;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(60, 60, 60, 0.26);
-  text-align: left;
-  list-style: none;
-  background: #fff;
-
-  li {
-    font-family: 'Source Sans Pro';
-    font-size: 14px;
+  &__selectCheckboxLabel {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    height: 25px;
     cursor: pointer;
+    font-size: 17px;
+    user-select: none;
+  }
 
-    &:hover {
-      background: #458b85;
+  &__selectCheckbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &__selectCheckboxMark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 1px solid $pink;
+
+    .step__selectCheckbox:checked ~ & {
+      background-color: $pink;
+      box-shadow: inset 1px 1px 1px 2px;
+
+      .animate & {
+        animation: transportPlaying 500ms;
+        animation-timing-function: ease-in-out;
+        animation-direction: alternate;
+      }
     }
-  }
-}
-
-.vs__actions {
-  display: none;
-}
-
-.vs__selected-options {
-  display: flex;
-  flex-basis: 100%;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  padding: 0 2px;
-  position: relative;
-  width: 60px;
-
-  .keySelect & {
-    width: 40px;
-  }
-}
-
-.vs__selected {
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  color: #333;
-  line-height: 1.4;
-  margin: 4px 2px 0;
-  padding: 0 0.25em;
-  font-family: 'Source Sans Pro';
-  font-weight: 600;
-  font-size: 14px;
-  color: #b1b480;
-
-  .keySelect & {
-    color: #458b85;
-  }
-
-  .vs--disabled & {
-    color: #ff6b76;
   }
 }
 </style>
