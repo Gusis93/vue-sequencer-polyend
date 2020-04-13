@@ -48,15 +48,15 @@ export default {
   },
   methods: {
     selectAllKeys() {
-      this.$store.commit('selectAllKeys', {
-        track: this.track,
-        key: this.key
-      });
+      this.modifyParams({ key: this.key });
     },
     selectAllInstruments() {
-      this.$store.commit('selectAllInstruments', {
+      this.modifyParams({ instrument: this.instrument });
+    },
+    modifyParams(params) {
+      this.$store.dispatch('modifySeveralSteps', {
         track: this.track,
-        instrument: this.instrument
+        params
       });
     },
     toggleSteps() {
@@ -64,8 +64,8 @@ export default {
         this.$store.commit('selectAllSteps', this.track);
         return;
       }
-
-      this.$store.commit('deselectSteps', this.track);
+      
+      this.modifyParams({ selected: false, animate: false });
     }
   },
   props: {

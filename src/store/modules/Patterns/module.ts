@@ -1,93 +1,78 @@
 import Vue from 'vue';
+import { State, Steps, Payload } from './types';
+import { ActionContext } from 'vuex';
 
 const returnArray = () => Array(16).fill({ selected: false, animate: false, instrument: 'kick', key: 'C3' });
+const tracksArray = () => [...Array(4)].map((track, i) => ({ id: i, steps: returnArray() }));
 
-const state = {
+const state: State = {
   loadedPattern: 0,
   patterns: [{
     id: 0,
-    tracks: [
-      {
-        id: 0,
-        steps: returnArray(),
-      },
-      {
-        id: 1,
-        steps: returnArray(),
-      },
-      {
-        id: 2,
-        steps: returnArray(),
-      },
-      {
-        id: 3,
-        steps: returnArray(),
-      }
-    ]
+    tracks: tracksArray()
   }],
 };
 
-const mutations = {
-  addStep({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
-    Vue.set(patterns[loadedPattern].tracks[info.track].steps, info.step, info.info);
+const actions = {
+  modifyStep({ commit }: ActionContext<State, State>, { ...args }: Payload) {
+    const { patterns, loadedPattern } = state;
+    const { track, step } = args;
+    const stepInfo = patterns[loadedPattern].tracks[track].steps[step];
+    
+    commit('modifyStep', { ...args, stepInfo });
   },
-  deleteStep({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
-    patterns[loadedPattern].tracks[info.track].steps[info.step].selected = false;
-  },
-  renderAnimation({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
-    patterns[loadedPattern].tracks[info.track].steps[info.step].animate = true;
-  },
-  renderAnimationFalse({ patterns, loadedPattern }: any, info: any) { // TODO Change any type
-    patterns[loadedPattern].tracks[info.track].steps[info.step].animate = false;
-  },
-  selectAllSteps({ patterns, loadedPattern }: any, track: any) {
+  modifySeveralSteps({ commit, state }: ActionContext<State, State>, { ...args }: Payload) {
+    const { patterns, loadedPattern } = state;
+    const { track, params } = args;
     const trackSteps = patterns[loadedPattern].tracks[track].steps
 
-    patterns[loadedPattern].tracks[track].steps = trackSteps.map((el: any) => {
-      if (!el.selected) {
-        const key = el.key || 'C3';
-        const instrument = el.instrument || 'kick';
+    const newSteps = trackSteps.map((el: Steps) => {
+      return { ...el, ...params };
+    });
+    commit('modifySeveralSteps', { ...args, newSteps });
+  }
+};
+
+const mutations = {
+  modifyStep({ patterns, loadedPattern }: State, { track, step, action, value, stepInfo }: Payload) {
+    Vue.set(patterns[loadedPattern].tracks[track].steps, step, { ...stepInfo, [action]: value });
+  },
+  addStep({ patterns, loadedPattern }: State, { track, step, stepInfo }: Payload) {
+    Vue.set(patterns[loadedPattern].tracks[track].steps, step, stepInfo);
+  },
+  modifySeveralSteps({ patterns, loadedPattern }: State, { track, newSteps }: Payload) {
+    patterns[loadedPattern].tracks[track].steps = newSteps
+  },
+  selectAllSteps({ patterns, loadedPattern }: State, track: number) {
+    const trackSteps = patterns[loadedPattern].tracks[track].steps
+
+    patterns[loadedPattern].tracks[track].steps = trackSteps.map((step: Steps) => {
+      const { selected, key: stepKey, instrument: stepInstrument } = step;
+
+      if (!selected) {
+        const key: string = stepKey || 'C3';
+        const instrument: string = stepInstrument || 'kick';
 
         return {
           selected: true,
           animate: false,
           key,
           instrument
-        }
+        };
       }
 
-      return el;
+      return step;
     });
   },
-  deselectSteps({ patterns, loadedPattern }: any, track: any) {
-    const trackSteps = patterns[loadedPattern].tracks[track].steps
-
-    patterns[loadedPattern].tracks[track].steps = trackSteps.map((el: any) => {
-      return { ...el, selected: false, animate: false };
-    });
-  },
-  selectAllKeys({ patterns, loadedPattern }: any, { track, key }: any) {
-    const trackSteps = patterns[loadedPattern].tracks[track].steps
-
-    patterns[loadedPattern].tracks[track].steps = trackSteps.map((el: any) => {
-      return { ...el, key };
-    });
-  },
-  selectAllInstruments({ patterns, loadedPattern }: any, { track, instrument }: any) {
-    const trackSteps = patterns[loadedPattern].tracks[track].steps
-
-    patterns[loadedPattern].tracks[track].steps = trackSteps.map((el: any) => {
-      return { ...el, instrument };
-    });
-  }
 };
 
 const getters = {
-  tracks: (state: any) => state.patterns[state.loadedPattern].tracks
+  tracks: (state: State) => state.patterns[state.loadedPattern].tracks
 };
 
 const patterns = {
   state,
+  actions,
   mutations,
   getters,
 };

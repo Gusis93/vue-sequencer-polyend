@@ -4,3 +4,8 @@ export interface State {
   volume: number,
   tempo: number
 }
+
+export interface Payload {
+  transportParam: 'volume' | 'tempo',
+  value: number
+}

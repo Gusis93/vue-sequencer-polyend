@@ -1,7 +1,7 @@
 <template>
   <li :class="{step__base: true, animate: step.animate}">
     <v-select
-      v-model="key2"
+      v-model="key"
       class="keySelect"
       :options="semiTonesArray"
       :clearable="false"
@@ -10,7 +10,7 @@
     ></v-select>
 
     <v-select
-      v-model="instrument2"
+      v-model="instrument"
       label="name"
       :options="instruments"
       :clearable="false"
@@ -36,12 +36,6 @@ export default Vue.extend({
   components: {
     vSelect
   },
-  data() {
-    return {
-      key: 'C3',
-      instrument: 'kick'
-    };
-  },
   computed: {
     ...mapGetters(['semiTonesArray']),
     isSelected: {
@@ -50,54 +44,49 @@ export default Vue.extend({
       },
       set(stepSelected) {
         if (stepSelected) {
-          this.addStep();
+          (this as any).addStep();
           return;
         }
 
-        this.deleteStep();
+        (this as any).modifyStep('selected', false);
       }
     },
-    key2: {
-      get() {
+    key: {
+      get(): string {
         return this.step.key;
       },
-      set(key) {
-        this.key = key;
-        this.handleSelectChange();
+      set(key: string) {
+        (this as any).modifyStep('key', key);
       }
     },
-    instrument2: {
-      get() {
+    instrument: {
+      get(): string {
         return this.step.instrument;
       },
-      set(instrument) {
-        this.instrument = instrument;
-        this.handleSelectChange();
+      set(instrument): void {
+        (this as any).modifyStep('instrument', instrument);
       }
     }
   },
   methods: {
-    handleSelectChange() {
-      if (this.step.selected) {
-        this.addStep();
-      }
+    modifyStep(action: string, value: [string, boolean]) {
+      this.$store.dispatch('modifyStep', {
+        step: this.stepN,
+        track: this.track,
+        action,
+        value
+      });
     },
-    addStep() {
+    addStep: function() {
       this.$store.commit('addStep', {
         step: this.stepN,
         track: this.track,
-        info: {
+        stepInfo: {
           selected: true,
           animate: false,
           key: this.key,
           instrument: this.instrument
         }
-      });
-    },
-    deleteStep() {
-      this.$store.commit('deleteStep', {
-        step: this.stepN,
-        track: this.track
       });
     }
   },
