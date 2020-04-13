@@ -29,6 +29,10 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &:first-child {
+      padding-top: 50px;
+    }
   }
 
   &__wrapper {

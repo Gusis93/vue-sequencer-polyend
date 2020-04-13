@@ -9,7 +9,10 @@
 }
 
 .vs__search {
-  display: none;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  position: absolute;
 }
 
 .vs__dropdown-menu {
