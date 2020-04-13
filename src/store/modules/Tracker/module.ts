@@ -17,17 +17,24 @@ const createSemiTonesArray = () => {
 const state: State = {
   isPlaying: false,
   semiTonesArray: createSemiTonesArray(),
+  volume: 0,
+  tempo: 120
 }
 
 const mutations = {
   togglePlay(state: State) {
     state.isPlaying = !state.isPlaying;
+  },
+  modifyTransportParam(state: State, { transportParam, value }: any) {
+    state[transportParam] = value
   }
 }
 
 const getters = {
   isPlaying: (state: State) => state.isPlaying,
   semiTonesArray: (state: State) => state.semiTonesArray,
+  volume: (state: State) => state.volume,
+  tempo: (state: State) => state.tempo,
 }
 
 const tracker = {

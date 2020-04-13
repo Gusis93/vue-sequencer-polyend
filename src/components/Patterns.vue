@@ -1,7 +1,7 @@
 <template>
   <div class="pattern__base">
-    <div class="steps__wrapper">
-      <ul class="steps__display">
+    <div class="stepsDisplay__wrapper">
+      <ul class="stepsDisplay__display">
         <li v-for="i in 16" v-bind:key="'step-display-' + i">{{i}}</li>
       </ul>
     </div>
@@ -10,8 +10,8 @@
       <Track v-for="track in tracks" v-bind:key="'track-' + track.id" :track="track" />
     </div>
 
-    <div class="steps__wrapper">
-      <ul class="steps__display">
+    <div class="stepsDisplay__wrapper">
+      <ul class="stepsDisplay__display">
         <li v-for="i in 16" v-bind:key="'step-display-' + i">{{i}}</li>
       </ul>
     </div>
@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import Track from './Tracks/Track.vue';
+import Track from './Track/Track.vue';
 import { mapGetters } from 'vuex';
 
 export default Vue.extend({
@@ -42,6 +42,7 @@ export default Vue.extend({
     display: flex;
     padding: 10px;
     box-shadow: 2px 3px 10px;
+    margin-top: 10px;
   }
 }
 
@@ -51,7 +52,7 @@ export default Vue.extend({
   }
 }
 
-.steps {
+.stepsDisplay {
   &__display {
     color: white;
     display: flex;
@@ -70,7 +71,7 @@ export default Vue.extend({
   }
 
   &__wrapper {
-    background: #414141;
+    background: #2B2B2B;
     padding: 10px;
 
     &:last-child {

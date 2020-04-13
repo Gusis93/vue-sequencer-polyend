@@ -1,7 +1,9 @@
 <template>
   <div class="tracker__base">
-    <Patterns />
-    <Controls />
+    <div class="tracker__wrapper">
+      <Controls />
+      <Patterns />
+    </div>
   </div>
 </template>
 
@@ -27,18 +29,15 @@ export default Vue.extend({
 <style lang="scss">
 html {
   height: 100%;
-  background: #1c1a18;
-}
-
-body {
-  height: 100%;
+  background: #f4f4f1;
 }
 
 .tracker {
   &__base {
     height: 100%;
+    background-image: linear-gradient(0deg, #3b3b43, #1b191a);
     display: flex;
-    justify-content: center;
+    padding: 40px 20px;
     align-items: center;
     flex-direction: column;
   }

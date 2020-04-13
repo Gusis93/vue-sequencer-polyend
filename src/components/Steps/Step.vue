@@ -1,39 +1,29 @@
 <template>
-  <div class="step__base">
-    <!-- TODO snare shouldn't show key selection as is not possible -->
-    
+  <li :class="{step__base: true, animate: step.animate}">
     <v-select
-      @input="handleSelectChange"
-      v-model="key"
+      v-model="key2"
       class="keySelect"
       :options="semiTonesArray"
-      :components="{OpenIndicator}"
       :clearable="false"
       :searchable="false"
+      :disabled="instrument === 'snare'"
     ></v-select>
 
     <v-select
-      @input="handleSelectChange"
-      v-model="instrument"
+      v-model="instrument2"
       label="name"
       :options="instruments"
       :clearable="false"
       :searchable="false"
-      :components="{OpenIndicator}"
       :reduce="instrument => instrument.id"
     ></v-select>
 
-    <label class="label" >
-      <input
-        v-model="isStepSelected"
-        @change="toggleStep"
-        class="isacheck"
-        type="checkbox"
-      />
+    <label class="label">
+      <input v-model="isSelected" class="isacheck" type="checkbox" />
 
       <span class="marked"></span>
     </label>
-  </div>
+  </li>
 </template>
 
 <script lang="ts">
@@ -49,30 +39,48 @@ export default Vue.extend({
   data() {
     return {
       key: 'C3',
-      instrument: 'kick',
-      isStepSelected: false,
-      OpenIndicator: {
-        render: (createElement: any) =>
-          createElement('span', { class: { toggle: true } })
-      }
+      instrument: 'kick'
     };
   },
   computed: {
-    ...mapGetters(['semiTonesArray'])
+    ...mapGetters(['semiTonesArray']),
+    isSelected: {
+      get() {
+        return this.step.selected;
+      },
+      set(stepSelected) {
+        if (stepSelected) {
+          this.addStep();
+          return;
+        }
+
+        this.deleteStep();
+      }
+    },
+    key2: {
+      get() {
+        return this.step.key;
+      },
+      set(key) {
+        this.key = key;
+        this.handleSelectChange();
+      }
+    },
+    instrument2: {
+      get() {
+        return this.step.instrument;
+      },
+      set(instrument) {
+        this.instrument = instrument;
+        this.handleSelectChange();
+      }
+    }
   },
   methods: {
     handleSelectChange() {
-      if (this.isStepSelected) {
+      if (this.step.selected) {
         this.addStep();
       }
-    },
-    toggleStep() {
-      if (this.isStepSelected) {
-        this.addStep();
-        return;
-      }
-
-      this.deleteStep();
     },
     addStep() {
       this.$store.commit('addStep', {
@@ -80,6 +88,7 @@ export default Vue.extend({
         track: this.track,
         info: {
           selected: true,
+          animate: false,
           key: this.key,
           instrument: this.instrument
         }
@@ -102,18 +111,40 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
+@keyframes testing {
+  0%,
+  100% {
+    box-shadow: inset 1px 1px 1px 2px;
+    background-color: #92859c;
+  }
+  50% {
+    box-shadow: inset -1px -1px 1px 2px;
+    background-color: #458b85;
+  }
+}
+
 .marked {
   position: absolute;
   top: 0;
   left: 0;
   height: 25px;
   width: 25px;
-  border: 1px solid #92859C;;
+  border: 1px solid #92859c;
 }
 
 input:checked ~ .marked {
-  background-color: #92859C;
+  background-color: #92859c;
   box-shadow: inset 1px 1px 1px 2px;
+
+  .animate & {
+    animation: testing 500ms;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate;
+  }
+}
+
+.animate .marked {
+  background-color: #92859c;
 }
 
 .isacheck {
@@ -126,7 +157,7 @@ input:checked ~ .marked {
   display: block;
   position: relative;
   padding-left: 25px;
-  height: 25px;;
+  height: 25px;
   cursor: pointer;
   font-size: 17px;
   -webkit-user-select: none;
@@ -219,6 +250,10 @@ input:checked ~ .marked {
 
   .keySelect & {
     color: #458b85;
+  }
+
+  .vs--disabled & {
+    color: #ff6b76;
   }
 }
 </style>
