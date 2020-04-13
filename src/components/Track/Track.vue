@@ -46,9 +46,7 @@ export default Vue.extend({
           id: 'snare',
           name: 'Snare',
           allowsNotes: false,
-          synth: new NoiseSynth({
-            octaves: 10
-          }).toDestination()
+          synth: new NoiseSynth().toDestination()
         },
         {
           id: 'bass',
@@ -64,40 +62,42 @@ export default Vue.extend({
           }).toDestination()
         }
       ],
-      sequence: ''
+      sequence: new Sequence()
     };
   },
   methods: {
-    toggleMute(mute: boolean) {
-      Vue.set(this.sequence, 'mute', true);
-    },
-    playSequence(time: any, col: any) {
+    playSequence(time: number, col: number) {
       if (this.track.steps[col].selected) {
-        const { key, instrument } = this.track.steps[col];
-        const { allowsNotes, synth } = this.instruments.find(
-          el => el.id === instrument
+        const { key, instrument: selectedInstrument } = this.track.steps[col];
+        const instrument = this.instruments.find(
+          instrument => instrument.id === selectedInstrument
         );
 
-        if (allowsNotes) {
-          synth.triggerAttackRelease(key, '16n', time);
+        if (typeof instrument === 'undefined') {
+          return;
+        }
+
+        if (instrument.allowsNotes) {
+          instrument.synth.triggerAttackRelease(key, '16n', time);
         } else {
-          synth.triggerAttack(time);
+          instrument.synth.triggerAttack(time);
         }
 
         Draw.schedule(() => {
-          this.$store.commit('renderAnimation', {
-            track: this.track.id,
-            step: col
-          });
-
+          this.animate(true, col);
           setTimeout(() => {
-            this.$store.commit('renderAnimationFalse', {
-              track: this.track.id,
-              step: col
-            });
+            this.animate(false, col);
           }, 500);
         }, time);
       }
+    },
+    animate(animate: boolean, col: number) {
+      this.$store.dispatch('modifyStep', {
+        step: col,
+        track: this.track.id,
+        action: 'animate',
+        value: animate
+      });
     }
   },
   computed: {
@@ -126,10 +126,10 @@ export default Vue.extend({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .track {
   &__base {
-    background: #2b2b2b;
+    background: $grey;
     padding: 40px 20px;
     padding: 10px;
     border-left: 4px solid;

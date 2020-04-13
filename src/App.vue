@@ -23,7 +23,7 @@ h1 {
   font-family: 'Source Sans Pro';
   font-weight: 300;
   font-size: 52px;
-  color: #76A9AC;
+  color: $light-blue;
   padding: 50px;
 }
 </style>

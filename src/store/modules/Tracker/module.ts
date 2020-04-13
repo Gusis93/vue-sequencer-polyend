@@ -1,4 +1,4 @@
-import { State } from './types';
+import { State, Payload } from './types';
 
 const createSemiTonesArray = () => {
   const semiToneArray = [];
@@ -25,8 +25,8 @@ const mutations = {
   togglePlay(state: State) {
     state.isPlaying = !state.isPlaying;
   },
-  modifyTransportParam(state: State, { transportParam, value }: any) {
-    state[transportParam] = value
+  modifyTransportParam(state: State, { transportParam, value }: Payload) {
+    state[transportParam] = value;
   }
 }
 

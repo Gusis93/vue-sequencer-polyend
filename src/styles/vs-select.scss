@@ -1,0 +1,82 @@
+.v-select {
+  position: relative;
+  margin-right: 10px;
+}
+
+.vs__dropdown-toggle {
+  border-bottom: 1px dashed $white;
+  cursor: pointer;
+}
+
+.vs__search {
+  display: none;
+}
+
+.vs__dropdown-menu {
+  padding: 4px;
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  z-index: 1000;
+  margin: 0;
+  width: 100%;
+  max-height: 350px;
+  overflow-y: auto;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(60, 60, 60, 0.26);
+  text-align: left;
+  list-style: none;
+  background: #fff;
+
+  li {
+    font-family: 'Source Sans Pro';
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+      background: $blue;
+    }
+  }
+}
+
+.vs__actions {
+  display: none;
+}
+
+.vs__selected-options {
+  display: flex;
+  flex-basis: 100%;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  padding: 0 2px;
+  position: relative;
+  width: 60px;
+
+  .step__keySelect & {
+    width: 40px;
+  }
+}
+
+.vs__selected {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  color: #333;
+  line-height: 1.4;
+  margin: 4px 2px 0;
+  padding: 0 0.25em;
+  font-family: 'Source Sans Pro';
+  font-weight: 600;
+  font-size: 14px;
+  color: $yellow;
+
+  .step__keySelect & {
+    color: $blue;
+  }
+
+  .vs--disabled & {
+    color: $red-disabled;
+  }
+}

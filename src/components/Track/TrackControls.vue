@@ -3,7 +3,7 @@
     <v-select
       @input="selectAllKeys"
       v-model="key"
-      class="keySelect"
+      class="step__keySelect"
       :options="semiTonesArray"
       :clearable="false"
       :searchable="false"
@@ -13,16 +13,17 @@
       @input="selectAllInstruments"
       v-model="instrument"
       label="name"
+      class="step__instrumentSelect"
       :options="instruments"
       :clearable="false"
       :searchable="false"
       :reduce="instrument => instrument.id"
     ></v-select>
 
-    <label class="label">
-      <input v-model="allSelected" class="isacheck" type="checkbox" @change="toggleSteps" />
+    <label class="step__selectCheckboxLabel">
+      <input v-model="allSelected" class="step__selectCheckbox" type="checkbox" @change="toggleSteps" />
 
-      <span class="marked"></span>
+      <span class="step__selectCheckboxMark"></span>
     </label>
   </div>
 </template>
@@ -48,15 +49,15 @@ export default {
   },
   methods: {
     selectAllKeys() {
-      this.$store.commit('selectAllKeys', {
-        track: this.track,
-        key: this.key
-      });
+      this.modifyParams({ key: this.key });
     },
     selectAllInstruments() {
-      this.$store.commit('selectAllInstruments', {
+      this.modifyParams({ instrument: this.instrument });
+    },
+    modifyParams(params) {
+      this.$store.dispatch('modifySeveralSteps', {
         track: this.track,
-        instrument: this.instrument
+        params
       });
     },
     toggleSteps() {
@@ -65,7 +66,7 @@ export default {
         return;
       }
 
-      this.$store.commit('deselectSteps', this.track);
+      this.modifyParams({ selected: false, animate: false });
     }
   },
   props: {
