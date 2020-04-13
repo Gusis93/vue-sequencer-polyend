@@ -1,4 +1,7 @@
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/vue-sequencer-polyend/'
+    : '/',
   css: {
     loaderOptions: {
       sass: {
