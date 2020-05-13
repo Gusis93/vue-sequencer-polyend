@@ -1,7 +1,5 @@
 # vue-sequencer-polyend
 
-# App
-
 https://gusis93.github.io/vue-sequencer-polyend/
 
 ## About
